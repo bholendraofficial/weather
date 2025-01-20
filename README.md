@@ -20,10 +20,12 @@ Ensure you have the following environment set up to build and run the applicatio
 - **API Integration**: Uses OpenWeatherMap API to fetch weather data and handle API responses, including error scenarios (e.g., city not found).
 
 ## Screenshots
-![Weather App Screenshot](https://github.com/user-attachments/assets/443542db-8818-48de-b715-b9e4054bd42a)
+![Weather App Screenshot](https://github.com/user-attachments/assets/175e1a50-cf56-468b-a33c-c7577a6c0c41)
 
 ## Demo Video
-[Watch the demo video](https://github.com/user-attachments/assets/c4f3275c-2232-43c3-af49-94444d0aed58)
+
+![Watch the demo video](https://github.com/user-attachments/assets/1c564de7-f6f2-4153-a736-ad024cb9f9f1)
+
 
 ## Download Demo APK
 [app-release.apk](https://github.com/bholendraofficial/weather-app/blob/master/design/app-release.apk)
