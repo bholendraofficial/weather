@@ -1,3 +1,5 @@
+import 'forecast_model.dart';
+
 class Weather {
   final double temperature;
   final double feelsLike;
@@ -26,6 +28,9 @@ class Weather {
   final int id;
   final int cod;
 
+  // Forecast-related fields
+  ForecastModel? forecastModel;
+
   Weather({
     required this.temperature,
     required this.feelsLike,
@@ -53,9 +58,11 @@ class Weather {
     required this.timezone,
     required this.id,
     required this.cod,
+    this.forecastModel, // Adding forecast list as a field
   });
 
-  factory Weather.fromJson(Map<String, dynamic> json) {
+  factory Weather.fromJson(Map<String, dynamic> json, {ForecastModel? forecastModel}) {
+
     return Weather(
       temperature: json['main']['temp'].toDouble(),
       feelsLike: json['main']['feels_like'].toDouble(),
@@ -83,6 +90,7 @@ class Weather {
       timezone: json['timezone'],
       id: json['id'],
       cod: json['cod'],
+      forecastModel: forecastModel,  // Including forecast list in the Weather object
     );
   }
 }

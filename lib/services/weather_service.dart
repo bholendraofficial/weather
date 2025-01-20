@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import '../models/forecast_model.dart';
 import '../models/weather_model.dart';
 
 class WeatherService {
@@ -11,9 +12,27 @@ class WeatherService {
     final response = await http.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
-      return Weather.fromJson(json.decode(response.body));
+      Weather weather= Weather.fromJson(json.decode(response.body));
+
+      weather.forecastModel = await getForecastWeather(latitude, longitude);
+      return weather;
     } else {
-      throw 'Failed to load weather data.';
+      throw 'Failed to load weather.';
+    }
+  }
+
+  // Get forecast weather (list of ForecastItem objects) based on latitude and longitude
+  Future<ForecastModel> getForecastWeather(double latitude, double longitude) async {
+    final url =
+        'https://api.openweathermap.org/data/2.5/forecast?lat=$latitude&lon=$longitude&appid=$apiKey&units=metric&cnt=7';
+    final response = await http.get(Uri.parse(url));
+
+    if (response.statusCode == 200) {
+      // Parse the response body and return the forecast list
+      ForecastModel forecastModel = ForecastModel.fromJson(json.decode(response.body));
+      return forecastModel;  // Return the list of forecast items
+    } else {
+      throw Exception('Failed to load forecast data.');
     }
   }
 
@@ -31,3 +50,4 @@ class WeatherService {
     }
   }
 }
+
