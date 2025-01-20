@@ -24,11 +24,15 @@ Ensure you have the following environment set up to build and run the applicatio
 
 
 ## Demo Video
-![Watch the demo video](https://github.com/user-attachments/assets/65b5ac5f-daa6-4f29-8586-f5ebc55c171c)
+![Watch the demo video]()
+https://github.com/user-attachments/assets/a65eb2fd-9f20-46f9-83d6-f1af1dd0b58a
+
+
+
 
 
 ## Download Demo APK
-[app-release.apk](https://github.com/bholendraofficial/weather-app/blob/master/design/app-release.apk)
+[app-release.apk](https://github.com/bholendraofficial/weather/raw/refs/heads/master/design/app-release.apk)
 
 ## How to Build and Run
 Follow these steps to set up, build, and run the Weather app:
