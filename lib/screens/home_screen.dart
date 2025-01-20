@@ -35,6 +35,16 @@ class _HomeScreenState extends State<HomeScreen> {
                         return const Center(child: CircularProgressIndicator());
                       }
 
+                      if(weatherProvider.errorMessage!=null)
+                        {
+                          return Center(
+                            child: Text(
+                              weatherProvider.errorMessage.toString(),
+                              style: const TextStyle(color: Colors.white),
+                            ),
+                          );
+                        }
+
                       if (weatherProvider.weather == null) {
                         return Center(
                           child: Column(

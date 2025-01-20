@@ -9,15 +9,18 @@ class WeatherService {
   Future<Weather> getWeather(double latitude, double longitude) async {
     final url =
         'https://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longitude&appid=$apiKey&units=metric';
-    final response = await http.get(Uri.parse(url));
+    try {
+      final response = await http.get(Uri.parse(url));
 
-    if (response.statusCode == 200) {
-      Weather weather= Weather.fromJson(json.decode(response.body));
-
-      weather.forecastModel = await getForecastWeather(latitude, longitude);
-      return weather;
-    } else {
-      throw 'Failed to load weather.';
+      if (response.statusCode == 200) {
+        Weather weather = Weather.fromJson(json.decode(response.body));
+        weather.forecastModel = await getForecastWeather(latitude, longitude);
+        return weather;
+      } else {
+        throw WeatherServiceException(json.decode(response.body)['message']);
+      }
+    } catch (error) {
+      throw WeatherServiceException('Error fetching weather: $error');
     }
   }
 
@@ -26,14 +29,14 @@ class WeatherService {
     try {
       final response = await http.get(url);
       if (response.statusCode == 200) {
-        Weather weather= Weather.fromJson(json.decode(response.body));
+        Weather weather = Weather.fromJson(json.decode(response.body));
         weather.forecastModel = await getForecastWeather(weather.lat, weather.lon);
         return weather;
       } else {
-        throw Exception('Failed to load weather');
+        throw WeatherServiceException(json.decode(response.body)['message']);
       }
     } catch (error) {
-      throw Exception('Error fetching weather: $error');
+      throw WeatherServiceException('Error fetching weather: $error');
     }
   }
 
@@ -41,17 +44,26 @@ class WeatherService {
     final url =
         'https://api.openweathermap.org/data/2.5/forecast?lat=$latitude&lon=$longitude&appid=$apiKey&units=metric&cnt=7&exclude=hourly,minutely';
 
-    final response = await http.get(Uri.parse(url));
+    try {
+      final response = await http.get(Uri.parse(url));
 
-    if (response.statusCode == 200) {
-      // Parse the response body and return the forecast list
-      ForecastModel forecastModel = ForecastModel.fromJson(json.decode(response.body));
-      return forecastModel;  // Return the list of forecast items
-    } else {
-      throw Exception('Failed to load forecast data.');
+      if (response.statusCode == 200) {
+        ForecastModel forecastModel = ForecastModel.fromJson(json.decode(response.body));
+        return forecastModel;
+      } else {
+        throw WeatherServiceException(json.decode(response.body)['message']);
+      }
+    } catch (error) {
+      throw WeatherServiceException('Error fetching forecast data: $error');
     }
   }
-
-
 }
+class WeatherServiceException implements Exception {
+  final String message;
+  WeatherServiceException(this.message);
 
+  @override
+  String toString() {
+    return message;
+  }
+}

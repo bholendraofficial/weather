@@ -6,6 +6,8 @@ class WeatherProvider with ChangeNotifier {
   final WeatherService weatherService;
   Weather? _weather;
 
+  String? errorMessage;  // To store error messages
+
   WeatherProvider({required this.weatherService});
 
   Weather? get weather => _weather;
@@ -16,34 +18,32 @@ class WeatherProvider with ChangeNotifier {
 
   Future<void> getWeather(double latitude, double longitude) async {
     _isLoading = true;
+    errorMessage = null;
     notifyListeners();
+
     try {
       _weather = await weatherService.getWeather(latitude, longitude);
-      _isLoading = false;
-      notifyListeners();
     } catch (error) {
+      errorMessage = error.toString();
+    } finally {
       _isLoading = false;
       notifyListeners();
-      rethrow;
     }
   }
 
   Future<void> getWeatherCity(String city) async {
     _isLoading = true;
+    errorMessage = '';  // Clear previous error messages
     notifyListeners();
+
     try {
       _weather = await weatherService.getWeatherCity(city);
-      _isLoading = false;
-      notifyListeners();
     } catch (error) {
+      errorMessage = error.toString();
+    } finally {
       _isLoading = false;
       notifyListeners();
-      rethrow;
     }
-  }
-
-  Future<Weather?> get getWeatherFuture async {
-    return _weather;
   }
 
   void setLoading(bool value) {
