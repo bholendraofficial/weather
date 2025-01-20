@@ -19,7 +19,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
+      resizeToAvoidBottomInset: false,
+      body: SizedBox(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
         child: Consumer<WeatherProvider>(
@@ -75,94 +76,113 @@ class _HomeScreenState extends State<HomeScreen> {
                               Expanded(
                                 child: Padding(
                                   padding: const EdgeInsets.all(16.0),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                      Image.network(
-                                        weatherProvider.weather!.icon,
-                                        width: 50,
-                                        height: 50,
-                                      ),
-                                      Text(
-                                        "${weatherProvider.weather!.cityName} (${weatherProvider.weather!.country})",
-                                        style: const TextStyle(
-                                          fontSize: 50,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      Text(
-                                        '${weatherProvider.weather!.temperature}°C',
-                                        style: const TextStyle(
-                                          fontSize: 50,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      Text(
-                                        weatherProvider.weather!.description
-                                            .toUpperCase(),
-                                        style: const TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
-                                          fontStyle: FontStyle.italic,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 16),
-                                      LayoutBuilder(
-                                        builder: (context, constraints) {
-                                          double containerWidth = constraints.maxWidth * 0.23; // 23% of available width
-                                          return Row(
-                                            crossAxisAlignment: CrossAxisAlignment.center,
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            children: [
-                                              // Humidity Container
-                                              createWeatherContainer(
-                                                label: 'Humidity',
-                                                value: '${weatherProvider.weather!.humidity}%',
-                                                icon: Icons.remove_red_eye,
-                                                containerWidth: containerWidth,
-                                              ),
-                                              const SizedBox(width: 8),
+                                  child: SafeArea(
+                                    child: Container(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: <Widget>[
+                                          Image.network(
+                                            weatherProvider.weather!.icon,
+                                            width: 50,
+                                            height: 50,
+                                          ),
+                                          Text(
+                                            "${weatherProvider.weather!.cityName} (${weatherProvider.weather!.country})",
+                                            style: const TextStyle(
+                                              fontSize: 50,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                          Text(
+                                            '${weatherProvider.weather!.temperature}°C',
+                                            style: const TextStyle(
+                                              fontSize: 50,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                          Text(
+                                            weatherProvider.weather!.description
+                                                .toUpperCase(),
+                                            style: const TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                              fontStyle: FontStyle.italic,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                          Text(
+                                            AppHelper.formatDate(
+                                                weatherProvider.weather!.dt),
+                                            style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 16),
+                                          LayoutBuilder(
+                                            builder: (context, constraints) {
+                                              double containerWidth = constraints
+                                                      .maxWidth *
+                                                  0.23; // 23% of available width
+                                              return Row(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  // Humidity Container
+                                                  createWeatherContainer(
+                                                    label: 'Humidity',
+                                                    value:
+                                                        '${weatherProvider.weather!.humidity}%',
+                                                    icon: Icons.remove_red_eye,
+                                                    containerWidth: containerWidth,
+                                                  ),
+                                                  const SizedBox(width: 8),
 
-                                              // Wind Speed Container
-                                              createWeatherContainer(
-                                                label: 'Wind Speed',
-                                                value: '${weatherProvider.weather!.windSpeed} m/s',
-                                                icon: Icons.wind_power,
-                                                containerWidth: containerWidth,
-                                              ),
-                                              const SizedBox(width: 8),
-                                              // Pressure Container
-                                              createWeatherContainer(
-                                                label: 'Pressure',
-                                                value: '${weatherProvider.weather!.pressure} hPa',
-                                                icon: Icons.compress_outlined,
-                                                containerWidth: containerWidth,
-                                              ),
-                                              const SizedBox(width: 8),
+                                                  // Wind Speed Container
+                                                  createWeatherContainer(
+                                                    label: 'Wind Speed',
+                                                    value:
+                                                        '${weatherProvider.weather!.windSpeed} m/s',
+                                                    icon: Icons.wind_power,
+                                                    containerWidth: containerWidth,
+                                                  ),
+                                                  const SizedBox(width: 8),
+                                                  // Pressure Container
+                                                  createWeatherContainer(
+                                                    label: 'Pressure',
+                                                    value:
+                                                        '${weatherProvider.weather!.pressure} hPa',
+                                                    icon: Icons.compress_outlined,
+                                                    containerWidth: containerWidth,
+                                                  ),
+                                                  const SizedBox(width: 8),
 
-                                              // Feels Like Container
-                                              createWeatherContainer(
-                                                label: 'Feels Like',
-                                                value: '${weatherProvider.weather!.feelsLike}°C',
-                                                icon: Icons.fence_sharp,
-                                                containerWidth: containerWidth,
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      )
-
-
-                                    ],
+                                                  // Feels Like Container
+                                                  createWeatherContainer(
+                                                    label: 'Feels Like',
+                                                    value:
+                                                        '${weatherProvider.weather!.feelsLike}°C',
+                                                    icon: Icons.fence_sharp,
+                                                    containerWidth: containerWidth,
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          )
+                                        ],
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
                               const Align(
+                                alignment: Alignment.centerLeft,
                                 child: Padding(
                                   padding: EdgeInsets.all(8.0),
                                   child: Text(
@@ -172,10 +192,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                         fontWeight: FontWeight.bold),
                                   ),
                                 ),
-                                alignment: Alignment.centerLeft,
                               ),
                               SizedBox(
-                                height: 130,
+                                height: 120,
                                 child: ListView.builder(
                                   itemCount: weatherProvider
                                           .weather
@@ -195,12 +214,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                     }
 
                                     final dt = forecastItem.dt;
-                                    DateTime date =
-                                        DateTime.fromMillisecondsSinceEpoch(
-                                            dt * 1000);
-                                    String formattedDate =
-                                        DateFormat('EEEE, dd, yyyy')
-                                            .format(date);
                                     final highTemp =
                                         forecastItem.maxTemperature;
                                     final lowTemp = forecastItem.minTemperature;
@@ -221,10 +234,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                         child: Column(
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
+                                          mainAxisAlignment: MainAxisAlignment.center,
                                           // Aligns text to the start
                                           children: [
                                             Text(
-                                              formattedDate,
+                                              AppHelper.formatDate(dt),
                                               style: const TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 // Bold text for the day
@@ -232,7 +246,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     18, // Optional: change text size for the title
                                               ),
                                             ),
-                                            const SizedBox(height: 8),
+
                                             Text(
                                               'High: ${highTemp}°C, Low: ${lowTemp}°C',
                                               style: const TextStyle(
@@ -251,7 +265,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     );
                                   },
                                 ),
-                              )
+                              ),
                             ],
                           ),
                         );
@@ -300,6 +314,23 @@ class _HomeScreenState extends State<HomeScreen> {
                                   InkWell(
                                     onTap: () {
                                       FocusScope.of(context).unfocus();
+                                      // Check if the search field is empty
+                                      if (searchController.text.isEmpty) {
+                                        // Show validation message in Snackbar
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          const SnackBar(
+                                            content: Text(
+                                                'Please enter a city name'),
+                                            backgroundColor: Colors.red,
+                                          ),
+                                        );
+                                      } else {
+                                        // Proceed with the weather fetching
+                                        weatherProvider.setLoading(true);
+                                        weatherProvider.getWeatherCity(
+                                            searchController.text);
+                                      }
                                     },
                                     child: Container(
                                       alignment: Alignment.center,
@@ -330,6 +361,16 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             );
           },
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          fetchLocation();
+        },
+        backgroundColor: Colors.deepOrangeAccent,
+        child: Icon(
+          Icons.gps_fixed,
+          color: Colors.white,
         ),
       ),
     );
@@ -442,7 +483,8 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(100)),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(100)),
               child: Icon(
                 icon,
                 color: Colors.deepOrangeAccent,
@@ -458,12 +500,20 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           Text(
             value,
-            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+            style: const TextStyle(
+                color: Colors.white, fontWeight: FontWeight.bold),
           ),
         ],
       ),
     );
   }
+}
 
+class AppHelper {
+  static String formatDate(int dt) {
+    DateTime date = DateTime.fromMillisecondsSinceEpoch(dt * 1000);
+    String formattedDate = DateFormat('EEEE, dd MMMM yyyy').format(date);
 
+    return formattedDate;
+  }
 }

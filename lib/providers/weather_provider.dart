@@ -28,6 +28,20 @@ class WeatherProvider with ChangeNotifier {
     }
   }
 
+  Future<void> getWeatherCity(String city) async {
+    _isLoading = true;
+    notifyListeners();
+    try {
+      _weather = await weatherService.getWeatherCity(city);
+      _isLoading = false;
+      notifyListeners();
+    } catch (error) {
+      _isLoading = false;
+      notifyListeners();
+      rethrow;
+    }
+  }
+
   Future<Weather?> get getWeatherFuture async {
     return _weather;
   }

@@ -21,10 +21,26 @@ class WeatherService {
     }
   }
 
-  // Get forecast weather (list of ForecastItem objects) based on latitude and longitude
+  Future<Weather> getWeatherCity(String city) async {
+    final url = Uri.parse('https://api.openweathermap.org/data/2.5/weather?q=$city&appid=$apiKey&units=metric');
+    try {
+      final response = await http.get(url);
+      if (response.statusCode == 200) {
+        Weather weather= Weather.fromJson(json.decode(response.body));
+        weather.forecastModel = await getForecastWeather(weather.lat, weather.lon);
+        return weather;
+      } else {
+        throw Exception('Failed to load weather');
+      }
+    } catch (error) {
+      throw Exception('Error fetching weather: $error');
+    }
+  }
+
   Future<ForecastModel> getForecastWeather(double latitude, double longitude) async {
     final url =
-        'https://api.openweathermap.org/data/2.5/forecast?lat=$latitude&lon=$longitude&appid=$apiKey&units=metric&cnt=7';
+        'https://api.openweathermap.org/data/2.5/forecast?lat=$latitude&lon=$longitude&appid=$apiKey&units=metric&cnt=7&exclude=hourly,minutely';
+
     final response = await http.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
@@ -36,18 +52,6 @@ class WeatherService {
     }
   }
 
-  Future<Weather> fetchWeather(String city) async {
-    final url = Uri.parse('https://api.openweathermap.org/data/2.5/weather?q=$city&appid=$apiKey&units=metric');
-    try {
-      final response = await http.get(url);
-      if (response.statusCode == 200) {
-        return Weather.fromJson(json.decode(response.body));
-      } else {
-        throw Exception('Failed to load weather');
-      }
-    } catch (error) {
-      throw Exception('Error fetching weather: $error');
-    }
-  }
+
 }
 
