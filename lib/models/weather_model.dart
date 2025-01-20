@@ -63,33 +63,37 @@ class Weather {
 
   factory Weather.fromJson(Map<String, dynamic> json, {ForecastModel? forecastModel}) {
 
+    double safeDouble(dynamic value) {
+      return value != null ? value.toDouble() : 0.0; // Default to 0.0 if null
+    }
+
     return Weather(
-      temperature: json['main']['temp'].toDouble(),
-      feelsLike: json['main']['feels_like'].toDouble(),
-      minTemperature: json['main']['temp_min'].toDouble(),
-      maxTemperature: json['main']['temp_max'].toDouble(),
-      description: json['weather'][0]['description'],
-      main: json['weather'][0]['main'],
+      temperature: safeDouble(json['main']['temp']),
+      feelsLike: safeDouble(json['main']['feels_like']),
+      minTemperature: safeDouble(json['main']['temp_min']),
+      maxTemperature: safeDouble(json['main']['temp_max']),
+      description: json['weather'][0]['description'] ?? '',
+      main: json['weather'][0]['main'] ?? '',
       icon: "http://openweathermap.org/img/w/${json['weather'][0]['icon']}.png",
-      humidity: json['main']['humidity'],
-      windSpeed: json['wind']['speed'].toDouble(),
-      windDeg: json['wind']['deg'],
-      windGust: json['wind']['gust'].toDouble(),
-      country: json['sys']['country'],
-      cityName: json['name'],
-      lat: json['coord']['lat'].toDouble(),
-      lon: json['coord']['lon'].toDouble(),
-      visibility: json['visibility'].toDouble(),
-      pressure: json['main']['pressure'],
-      seaLevel: json['main']['sea_level'],
-      grndLevel: json['main']['grnd_level'],
-      clouds: json['clouds']['all'],
-      sunrise: json['sys']['sunrise'],
-      sunset: json['sys']['sunset'],
-      dt: json['dt'],
-      timezone: json['timezone'],
-      id: json['id'],
-      cod: json['cod'],
+      humidity: json['main']['humidity'] ?? 0,
+      windSpeed: safeDouble(json['wind']['speed']),
+      windDeg: json['wind']['deg'] ?? 0,
+      windGust: safeDouble(json['wind']['gust']),
+      country: json['sys']['country'] ?? '',
+      cityName: json['name'] ?? '',
+      lat: safeDouble(json['coord']['lat']),
+      lon: safeDouble(json['coord']['lon']),
+      visibility: safeDouble(json['visibility']),
+      pressure: json['main']['pressure'] ?? 0,
+      seaLevel: json['main']['sea_level'] ?? 0,
+      grndLevel: json['main']['grnd_level'] ?? 0,
+      clouds: json['clouds']['all'] ?? 0,
+      sunrise: json['sys']['sunrise'] ?? 0,
+      sunset: json['sys']['sunset'] ?? 0,
+      dt: json['dt'] ?? 0,
+      timezone: json['timezone'] ?? 0,
+      id: json['id'] ?? 0,
+      cod: json['cod'] ?? 0,
       forecastModel: forecastModel,  // Including forecast list in the Weather object
     );
   }

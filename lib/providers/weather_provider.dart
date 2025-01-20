@@ -33,7 +33,7 @@ class WeatherProvider with ChangeNotifier {
 
   Future<void> getWeatherCity(String city) async {
     _isLoading = true;
-    errorMessage = '';  // Clear previous error messages
+    errorMessage = null;
     notifyListeners();
 
     try {
