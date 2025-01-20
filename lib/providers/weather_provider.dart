@@ -12,7 +12,7 @@ class WeatherProvider with ChangeNotifier {
 
   Weather? get weather => _weather;
 
-  bool _isLoading = false;
+  bool _isLoading = true;
 
   bool get isLoading => _isLoading;
 
