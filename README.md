@@ -20,11 +20,11 @@ Ensure you have the following environment set up to build and run the applicatio
 - **API Integration**: Uses OpenWeatherMap API to fetch weather data and handle API responses, including error scenarios (e.g., city not found).
 
 ## Screenshots
-![Weather App Screenshot](https://github.com/user-attachments/assets/175e1a50-cf56-468b-a33c-c7577a6c0c41)
+![Screenshot_20250121_004551](https://github.com/user-attachments/assets/3deca24f-def0-40a1-9547-75290c039280)
+
 
 ## Demo Video
-
-![Watch the demo video](https://github.com/user-attachments/assets/1c564de7-f6f2-4153-a736-ad024cb9f9f1)
+![Watch the demo video](https://github.com/user-attachments/assets/65b5ac5f-daa6-4f29-8586-f5ebc55c171c)
 
 
 ## Download Demo APK
