@@ -12,118 +12,193 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final TextEditingController searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Consumer<WeatherProvider>(
-        builder: (context, weatherProvider, child) {
-          if (weatherProvider.isLoading) {
-            return const Center(child: CircularProgressIndicator());
-          }
+      body: Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        child:  Consumer<WeatherProvider>(
+          builder: (context, weatherProvider, child) {
+            return Container(
+              decoration: getBackgroundGradient("default"),
+              child: Stack(
+                children: [
+                  Builder(builder: (BuildContext context) {
+                    if (weatherProvider.isLoading) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
 
-          if (weatherProvider.weather == null) {
-            return const Center(child: Text("Please try again"));
-          }
-
-          return Container(
-            decoration: getBackgroundGradient(weatherProvider.weather!.main), // Apply gradient background
-            child: Center(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      weatherProvider.weather != null
-                          ? Card(
-                              elevation: 5,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              color: Colors.blue.shade50,
-                              child: Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: Column(
-                                  children: <Widget>[
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          '${weatherProvider.weather!.temperature}°C',
-                                          style: const TextStyle(
-                                            fontSize: 40,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.blue,
-                                          ),
-                                        ),
-                                        const SizedBox(width: 10),
-                                        Image.network(
-                                          weatherProvider.weather!.icon,
-                                          width: 50,
-                                          height: 50,
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(height: 10),
-                                    Text(
-                                      weatherProvider.weather!.description,
-                                      style: const TextStyle(
-                                        fontSize: 20,
-                                        fontStyle: FontStyle.italic,
-                                        color: Colors.blueGrey,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 20),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Column(
-                                          children: [
-                                            Text(
-                                              'Humidity: ${weatherProvider.weather!.humidity}%',
-                                              style:
-                                                  const TextStyle(fontSize: 18),
-                                            ),
-                                            const SizedBox(height: 10),
-                                            Text(
-                                              'Wind Speed: ${weatherProvider.weather!.windSpeed} m/s',
-                                              style:
-                                                  const TextStyle(fontSize: 18),
-                                            ),
-                                          ],
-                                        ),
-                                        const SizedBox(width: 30),
-                                        Column(
-                                          children: [
-                                            Text(
-                                              'Pressure: ${weatherProvider.weather!.pressure} hPa',
-                                              style:
-                                                  const TextStyle(fontSize: 18),
-                                            ),
-                                            const SizedBox(height: 10),
-                                            Text(
-                                              'Feels Like: ${weatherProvider.weather!.feelsLike}°C',
-                                              style:
-                                                  const TextStyle(fontSize: 18),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ],
+                    if (weatherProvider.weather == null) {
+                      return Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text("Please try again",style: TextStyle(color: Colors.white),),
+                            const SizedBox(height: 20),
+                            GestureDetector(
+                              onTap: () {
+                                // Handle the retry logic here, such as calling the fetchWeather method again
+                                fetchLocation();
+                              },
+                              child: const CircleAvatar(
+                                radius: 30,
+                                backgroundColor: Colors.deepOrangeAccent, // Circle color
+                                child: Icon(
+                                  Icons.refresh, // Refresh icon
+                                  color: Colors.white,
+                                  size: 24,
                                 ),
                               ),
-                            )
-                          : Container(),
-                    ],
+                            ),
+                          ],
+                        ),
+                      );
+                    }
+
+
+                    if (weatherProvider.weather != null) {
+                      return Container(
+                        width: MediaQuery.of(context).size.width,
+                        decoration:
+                        getBackgroundGradient(weatherProvider.weather!.main),
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Image.network(
+                                weatherProvider.weather!.icon,
+                                width: 50,
+                                height: 50,
+                              ),
+                              Text(
+                                "${weatherProvider.weather!.cityName} (${weatherProvider.weather!.country})",
+                                style: const TextStyle(
+                                  fontSize: 50,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              Text(
+                                '${weatherProvider.weather!.temperature}°C',
+                                style: const TextStyle(
+                                  fontSize: 50,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              Text(
+                                weatherProvider.weather!.description.toUpperCase(),
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  fontStyle: FontStyle.italic,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              const SizedBox(height: 16),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'Humidity: ${weatherProvider.weather!.humidity}%',
+                                    style: const TextStyle(fontSize: 18),
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Text(
+                                    'Wind Speed: ${weatherProvider.weather!.windSpeed} m/s',
+                                    style: const TextStyle(fontSize: 18),
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Text(
+                                    'Pressure: ${weatherProvider.weather!.pressure} hPa',
+                                    style: const TextStyle(fontSize: 18),
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Text(
+                                    'Feels Like: ${weatherProvider.weather!.feelsLike}°C',
+                                    style: const TextStyle(fontSize: 18),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    }
+
+                    return Container();
+                  },),
+                  SafeArea(
+                    child: Align(
+                      alignment: Alignment.topCenter,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: kToolbarHeight,horizontal: 16),
+                        child: SizedBox(
+                          height: 50,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(100),
+                              border: Border.all(color: Colors.deepOrangeAccent, width: 2),
+                              color: Colors.white70,
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(100),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Expanded(
+                                    child: TextField(
+                                      controller: searchController,
+                                      textAlign: TextAlign.center,
+                                      style: const TextStyle(color: Colors.black),
+                                      decoration: const InputDecoration(
+                                        hintText: 'Enter city name',
+                                        hintStyle: TextStyle(color: Colors.grey),
+                                        fillColor: Colors.white70,
+                                        filled: true,
+                                        border: InputBorder.none,
+                                      ),
+                                      keyboardType: TextInputType.streetAddress,
+                                    ),
+                                  ),
+                                  InkWell(
+                                    onTap: () {
+                                      FocusScope.of(context).unfocus();
+                                    },
+                                    child: Container(
+                                      alignment: Alignment.center,
+                                      decoration: const BoxDecoration(
+                                        color: Colors.deepOrangeAccent,
+                                      ),
+                                      child: const Padding(
+                                        padding: EdgeInsets.symmetric(horizontal: 16.0),
+                                        child: Text(
+                                          'Search',
+                                          style: TextStyle(color: Colors.white70,fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
-                ),
+                ],
               ),
-            ),
-          );
-        },
+            );
+
+
+          },
+        ),
       ),
     );
   }
