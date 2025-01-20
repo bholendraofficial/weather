@@ -24,9 +24,9 @@ Ensure you have the following environment set up to build and run the applicatio
 
 
 ## Demo Video
-![Watch the demo video]()
-https://github.com/user-attachments/assets/a65eb2fd-9f20-46f9-83d6-f1af1dd0b58a
 
+
+https://github.com/user-attachments/assets/bf413c3d-b4df-4d81-a6c7-b8a9b8dc6202
 
 
 
